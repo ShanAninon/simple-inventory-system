@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+            <title>Aninon, Abasolo, Ambad - AA1</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    background-color: #f2f2f2;
+                    margin: 0;
+                    padding: 0;
+                    background-image: url('img.jpg');
+        			background-size: cover;
+                    background-attachment: fixed;
+                }
+                #remote {
+                    width: 80%;
+                    margin: 20px auto;
+                    background-color: #fff;
+                    padding: 40px;
+                    border-radius: 10px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                }
+                h1 {
+                    color: #333;
+                    text-align: left;
+                    margin-left: 10px;
+                    font-size: 50px;
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                }
+                span {
+                    background-color: #23245c;
+                    color: white;
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 5px;
+                    margin: 10px;
+                    cursor: pointer;
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                }
+                span:hover {
+                    background-color: #474388;
+                }
+                table {
+                    border-collapse: collapse;
+                    width: 100%;
+                    margin-top: 50px;
+                    display: none;
+                }
+                th, td {
+                    border: 5px solid #ddd;
+                    padding: 8px;
+                    text-align: left;
+                }
+                th {
+                    background-color: #f2f2f2;
+                    color: #333;
+                }
+                tr:nth-child(even) {
+                    background-color: #dedcdc;
+                }
+                tr:hover {
+                    background-color: #ddd;
+                }
+            </style>
+        </head>
+        <body>
+            <div id="remote"> 
+                <h1>Simple Inventory System</h1>
+                <span onclick="addItem()">Add Item</span>
+                <span onclick="addSupply()">Add Supply</span>
+                <span onclick="subSupply()">Delete Supply</span>
+                <span onclick="removeItem()">Delete Item</span>
+                <span onclick="displaySupply()">Display Supply</span>
+
+                <table id="inventory">
+                    <tr>
+                        <th>ITEMS</th>
+                        <th>SUPPLY</th>
+                    </tr>
+                </table>
+            </div>
+
+            <script>
+                var supply = [];
+                var table = document.getElementById("inventory");
+
+                function addItem() {
+                    var name = prompt("What item to add into the inventory: ").toUpperCase();
+                    var num = parseInt(prompt("How many " + name + " do you want to add: "));
+                    supply.push({ itemName: name, itemStock: num });
+                }
+
+                function addSupply() {
+                    var itemname = prompt("What item do you want to add stocks to: ").toUpperCase();
+                    var stock = parseInt(prompt("How many stocks you want to add: "));
+                    for (var i = 0; i < supply.length; i++) {
+                        if (supply[i].itemName === itemname) {
+                            supply[i].itemStock += stock;
+                        }
+                    }
+                }
+
+                function subSupply() {
+                    var itemname = prompt("What item do you want to remove stocks to: ").toUpperCase();
+                    var stock = parseInt(prompt("How many stocks you want to remove: "));
+                    for (var i = 0; i < supply.length; i++) {
+                        if (supply[i].itemName === itemname) {
+                            supply[i].itemStock -= stock;
+                            if (supply[i].itemStock < 0){
+                                supply[i].itemStock = 0;
+                            }
+                        }
+                    }
+                }       
+
+                function removeItem() {
+                    var itemName = prompt("What item to remove from the inventory: ").toUpperCase();
+                    for (var i = 0; i < supply.length; i++) {
+                        if (supply[i].itemName === itemName) {
+                            supply.splice(i, 1);
+                        }
+                    }
+                }
+
+                function displaySupply() {
+                    table.style.display = "block";
+                    table.innerHTML = "";
+                    var headerRow = table.insertRow(0);
+                    var header1 = headerRow.insertCell(0);
+                    var header2 = headerRow.insertCell(1);
+                    header1.innerHTML = "<b>ITEMS</b>";
+                    header2.innerHTML = "<b>SUPPLY</b>";
+                    for (var i = 0; i < supply.length; i++) {
+                        var row = table.insertRow(i + 1);
+                        var cell1 = row.insertCell(0);
+                        var cell2 = row.insertCell(1);
+                        cell1.innerHTML = supply[i].itemName;
+                        cell2.innerHTML = supply[i].itemStock;
+                    }
+                }
+            </script>
+        </body>
+    </html>
